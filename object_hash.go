@@ -119,10 +119,10 @@ func ObjectHash(a any) string {
 				return
 			}
 			sorted := fmtsort.Sort(a)
-			//指针类型Key忽略
-			if sorted.Key[0].Type().Kind() >= reflect.Array {
-				return
-			}
+			////指针类型Key忽略
+			//if sorted.Key[0].Type().Kind() >= reflect.Array {
+			//	return
+			//}
 			if sorted.Value[0].Kind() < reflect.Array {
 				s := sorted.Value[0].Type().Size()
 				for _, v := range sorted.Value {
@@ -138,7 +138,7 @@ func ObjectHash(a any) string {
 				}
 			}
 		case reflect.String:
-			hash.Sum(a.Bytes())
+			hash.Sum([]byte(a.String()))
 		case reflect.Chan:
 			fallthrough
 		case reflect.Func:
@@ -157,9 +157,4 @@ func ObjectHash(a any) string {
 	hashStruct(value)
 	hashMem()
 	return hex.EncodeToString(hash.Sum(nil))
-}
-
-type Hashes struct {
-	PHead uintptr
-	PTail uintptr
 }
