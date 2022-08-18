@@ -79,7 +79,10 @@ func ObjectHash(a any) string {
 			} else {
 				for i := 0; i < a.NumField(); i++ {
 					field := a.Field(i)
-					hashStruct(field)
+					if field.Kind() >= reflect.Array {
+						pTail = field.UnsafeAddr()
+						hashStruct(field)
+					}
 				}
 			}
 			return
